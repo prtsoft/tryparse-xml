@@ -19,9 +19,9 @@ namespace TryParseXML
             XmlSchema schema = new XmlSchema();
             foreach (XElement xe in doc.Descendants("item"))
             {
-
                 Console.WriteLine(xe.Name);
-                Debug.WriteLine(xe.Name + " - " + xe.Attribute("name") + " - Picture: " + xe.Attribute("picture") + " - Level " + xe.Attribute("level"));
+                Debug.WriteLine(xe.Name + " - " + xe.Attribute("name") + " - Picture: " + xe.Attribute("picture") +
+                                " - Level " + xe.Attribute("level"));
                 //There is no picture element for RECORD or PARENT lines.
                 if (xe.Attributes().Any(n => n.Name == "picture"))
                 {
@@ -32,7 +32,6 @@ namespace TryParseXML
                     schema.Items.Add(element);
                     element.Name = xe.Attribute("name").Value;
                     element.SchemaTypeName = CobolUtilities.ConvertPicture(xe.Attribute("picture").Value);
-
                 }
                 else
                 {
@@ -50,20 +49,14 @@ namespace TryParseXML
                     complexType.Particle = seq;
                     seq.MinOccurs = 0;
                     seq.MaxOccursString = "unbounded";
-                    foreach (var descs in xe.Descendants().Where(n => n.Attribute("name") != null && n.Name != "condition"))
+                    foreach (
+                        var descs in xe.Descendants().Where(n => n.Attribute("name") != null && n.Name != "condition"))
                     {
-
-
                         XmlSchemaElement Ref = new XmlSchemaElement();
                         seq.Items.Add(Ref);
                         Ref.RefName = new XmlQualifiedName(descs.Attribute("name").Value);
                     }
-
                 }
-
-
-
-
             }
 
             XmlSchemaSet schemaSet = new XmlSchemaSet();
@@ -83,4 +76,3 @@ namespace TryParseXML
         }
     }
 }
- 
